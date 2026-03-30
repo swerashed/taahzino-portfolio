@@ -197,6 +197,15 @@ export default function BoldVariation() {
   const [isAboutExpanded, setIsAboutExpanded] = useState<boolean>(false);
   const [showProjects, setShowProjects] = useState<boolean>(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -225,26 +234,50 @@ export default function BoldVariation() {
     <div className="min-h-screen bg-[#050505] text-zinc-50 font-sans selection:bg-white selection:text-black overflow-x-hidden">
       <CustomCursor hidden={hoveredVideo && !activeVideo} />
       {/* Navigation */}
-      <nav className="fixed top-0 z-50 w-full bg-[#050505]/80 backdrop-blur-md border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <span className="font-black text-xl tracking-tighter uppercase">Taahzino.</span>
-          <div className="hidden lg:flex gap-6 text-sm font-bold text-white">
-            <a href="#about" className="hover:text-emerald-400 transition-colors">/About</a>
-            <a href="#services" className="hover:text-emerald-400 transition-colors">/Services</a>
-            <a href="#projects" className="hover:text-emerald-400 transition-colors">/Projects</a>
-            <a href="#skills" className="hover:text-emerald-400 transition-colors">/Skills</a>
-            <a href="#testimonials" className="hover:text-emerald-400 transition-colors">/Testimonials</a>
-            <a href="#contact" className="hover:text-emerald-400 transition-colors">/Contact</a>
+      <nav 
+        className={`fixed z-50 w-full transition-all duration-500 ${
+          isScrolled 
+            ? 'top-4 px-4 md:px-6 bg-transparent border-b border-transparent' 
+            : 'top-0 px-0 bg-[#050505]/80 backdrop-blur-md border-b border-white/10'
+        }`}
+      >
+        <div 
+          className={`mx-auto flex items-center justify-between transition-all duration-500 ${
+            isScrolled 
+              ? 'max-w-5xl bg-[#111]/90 backdrop-blur-xl border border-white/10 rounded-full h-16 px-6 shadow-2xl shadow-black/50' 
+              : 'max-w-7xl h-24 px-6 md:px-8 border border-transparent rounded-full'
+          }`}
+        >
+          <a href="#" className="font-black text-xl tracking-tighter uppercase flex items-center gap-2 group">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 group-hover:animate-ping" />
+            Taahzino.
+          </a>
+          <div className="hidden lg:flex items-center gap-8 text-sm font-bold text-white/70">
+            {['About', 'Services', 'Projects', 'Skills', 'Testimonials', 'Contact'].map((item) => (
+              <a 
+                key={item}
+                href={`#${item.toLowerCase()}`} 
+                className="relative hover:text-white transition-colors py-2 group"
+              >
+                /{item}
+                <span className="absolute left-0 bottom-0 w-0 h-px bg-emerald-500 transition-all duration-300 group-hover:w-full" />
+              </a>
+            ))}
           </div>
           <div className="flex items-center gap-4">
-            <a href="#contact" className="hidden lg:inline-flex relative items-center justify-center px-6 py-2.5 bg-white text-black font-black uppercase tracking-widest text-xs transition-all hover:bg-zinc-200 group overflow-hidden">
+            <a 
+              href="#contact" 
+              className={`hidden lg:inline-flex relative items-center justify-center px-6 py-2.5 font-black uppercase tracking-widest text-xs transition-all group overflow-hidden ${
+                isScrolled ? 'bg-white text-black rounded-full hover:bg-zinc-200' : 'bg-white text-black hover:bg-zinc-200'
+              }`}
+            >
               <span className="absolute inset-0 w-full h-full bg-black/10 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
               <span className="relative z-10 flex items-center">
                 Let's Talk
               </span>
             </a>
             <button 
-              className="lg:hidden text-white hover:text-emerald-400 transition-colors"
+              className="lg:hidden text-white hover:text-emerald-400 transition-colors p-2 -mr-2"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
