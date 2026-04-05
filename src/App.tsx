@@ -8,6 +8,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Lenis from 'lenis';
 import HomePage from './pages/HomePage';
 import QuotePage from './pages/QuotePage';
+import ProjectsPage from './pages/ProjectsPage';
+import ScrollToTop from './components/ScrollToTop';
 
 export default function App() {
   useEffect(() => {
@@ -27,10 +29,12 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <div className="min-h-screen bg-black text-white font-sans">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/quote" element={<QuotePage />} />
+          <Route path="/projects" element={<ProjectsPage />} />
         </Routes>
       </div>
     </BrowserRouter>

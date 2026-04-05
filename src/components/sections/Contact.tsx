@@ -1,6 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight, Mail, Phone, MapPin, Clock } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, ArrowRight } from 'lucide-react';
 import { FadeIn } from '../ui/FadeIn';
 import { Reveal } from '../ui/Reveal';
 import { portfolioData } from '../../data/portfolio';
@@ -9,37 +8,7 @@ export const Contact = () => {
   const { contact } = portfolioData;
 
   return (
-    <>
-      {/* Get a Quote CTA Section */}
-      <section className="py-24 md:py-32 border-t border-white/10 bg-emerald-500 relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, black 1px, transparent 0)', backgroundSize: '32px 32px' }} />
-        
-        <div className="max-w-5xl mx-auto px-6 relative z-10 text-center">
-          <FadeIn>
-            <h2 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter text-black mb-8 leading-[0.9]">
-              Ready to <br />
-              <span className="text-transparent" style={{ WebkitTextStroke: '2px black' }}>Start Building?</span>
-            </h2>
-            <p className="text-black/80 text-lg md:text-xl max-w-2xl mx-auto mb-12 font-medium">
-              Turn your vision into reality. Get a detailed, custom quote for your next big project and let's create something extraordinary together.
-            </p>
-            <Link 
-              to="/quote" 
-              className="inline-flex items-center justify-center px-8 py-5 bg-black text-white font-black uppercase tracking-widest text-sm hover:bg-zinc-800 hover:scale-105 transition-all duration-300 group relative overflow-hidden shadow-2xl"
-            >
-              <span className="absolute inset-0 w-full h-full bg-white/10 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
-              <span className="relative z-10 flex items-center gap-3">
-                Get a Free Quote
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </span>
-            </Link>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact" className="py-16 md:py-32 border-t border-white/10 relative overflow-hidden">
+    <section id="contact" className="py-16 md:py-32 border-t border-white/10 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-emerald-500/[0.03] rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3 pointer-events-none" />
         
         <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -124,6 +93,5 @@ export const Contact = () => {
             </div>
         </div>
       </section>
-    </>
   );
 };

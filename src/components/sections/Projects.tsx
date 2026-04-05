@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowRight, Github } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { FadeIn } from '../ui/FadeIn';
 import { Reveal } from '../ui/Reveal';
 import { portfolioData } from '../../data/portfolio';
@@ -47,7 +48,7 @@ export const Projects = () => {
         </FadeIn>
 
         <div className="flex flex-col mt-10 relative pb-10 md:pb-20">
-          {projects.items.map((project, i) => {
+          {projects.items.slice(0, 3).map((project, i) => {
             const isEven = i % 2 === 0;
             return (
               <FadeIn key={project.id} delay={0.1}>
@@ -123,6 +124,21 @@ export const Projects = () => {
             );
           })}
         </div>
+
+        <FadeIn delay={0.2}>
+          <div className="flex justify-center mt-8">
+            <Link 
+              to="/projects" 
+              className="inline-flex items-center justify-center px-8 py-4 bg-white text-black font-black uppercase tracking-widest text-sm hover:bg-emerald-500 hover:text-black transition-all duration-300 group relative overflow-hidden"
+            >
+              <span className="absolute inset-0 w-full h-full bg-black/10 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
+              <span className="relative z-10 flex items-center gap-3">
+                View All Projects
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </span>
+            </Link>
+          </div>
+        </FadeIn>
       </div>
     </section>
   );

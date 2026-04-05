@@ -9,6 +9,7 @@ import { Services } from '../components/sections/Services';
 import { Projects } from '../components/sections/Projects';
 import { Skills } from '../components/sections/Skills';
 import { Testimonials } from '../components/sections/Testimonials';
+import { QuoteCTA } from '../components/sections/QuoteCTA';
 import { Contact } from '../components/sections/Contact';
 
 export default function HomePage() {
@@ -23,6 +24,7 @@ export default function HomePage() {
       <Projects />
       <Skills />
       <Testimonials />
+      <QuoteCTA />
       <Contact />
       <Footer />
     </div>

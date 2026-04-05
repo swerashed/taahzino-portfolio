@@ -217,6 +217,26 @@ export const portfolioData = {
         tags: ["Next.js", "Shopify API", "Tailwind CSS"],
         link: "#",
         github: "#"
+      },
+      {
+        id: "05",
+        title: "Quantum Analytics",
+        category: "Data Platform",
+        description: "An enterprise-grade analytics platform providing deep insights and predictive modeling.",
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop",
+        tags: ["Python", "React", "AWS", "Snowflake"],
+        link: "#",
+        github: "#"
+      },
+      {
+        id: "06",
+        title: "Echo Social",
+        category: "Web Application",
+        description: "A decentralized social network focusing on privacy and community-driven content moderation.",
+        image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1200&auto=format&fit=crop",
+        tags: ["TypeScript", "Node.js", "MongoDB", "WebRTC"],
+        link: "#",
+        github: "#"
       }
     ]
   },
