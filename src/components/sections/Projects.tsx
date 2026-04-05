@@ -48,11 +48,12 @@ export const Projects = () => {
         </FadeIn>
 
         <div className="flex flex-col mt-10 relative pb-10 md:pb-20">
-          {projects.items.slice(0, 3).map((project, i) => {
+          {projects.items.slice(0, 3).map((project, i, arr) => {
             const isEven = i % 2 === 0;
+            const isLast = i === arr.length - 1;
             return (
               <FadeIn key={project.id} delay={0.1}>
-                <div className={`py-10 md:py-24 group relative ${i !== projects.items.length - 1 ? 'border-b border-white/10' : ''}`}>
+                <div className={`pt-10 md:pt-24 group relative ${!isLast ? 'pb-10 md:pb-24 border-b border-white/10' : 'pb-0'}`}>
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
                     
                     {/* Image Side */}
