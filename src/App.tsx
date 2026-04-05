@@ -6,7 +6,7 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Lenis from 'lenis';
-import BoldVariation from './variations/BoldVariation';
+import HomePage from './pages/HomePage';
 import QuotePage from './pages/QuotePage';
 
 export default function App() {
@@ -29,7 +29,7 @@ export default function App() {
     <BrowserRouter>
       <div className="min-h-screen bg-black text-white font-sans">
         <Routes>
-          <Route path="/" element={<BoldVariation />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/quote" element={<QuotePage />} />
         </Routes>
       </div>

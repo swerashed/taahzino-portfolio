@@ -1,26 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { ArrowRight, ArrowLeft, CheckCircle2, X, Menu, Github, Linkedin, ExternalLink } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { portfolioData } from '../data/portfolio';
-
-// Reusable animation wrapper
-const FadeIn = ({ children, delay = 0, className = "" }: { children: React.ReactNode, delay?: number, className?: string }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-100px" }}
-    transition={{ duration: 0.7, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
-    className={className}
-  >
-    {children}
-  </motion.div>
-);
+import { motion } from 'motion/react';
+import { ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { Navbar } from '../components/layout/Navbar';
+import { Footer } from '../components/layout/Footer';
+import { FadeIn } from '../components/ui/FadeIn';
 
 export default function QuotePage() {
-  const { contact } = portfolioData;
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -30,14 +15,6 @@ export default function QuotePage() {
     projectType: '',
     details: ''
   });
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   useEffect(() => {
     // Cal.com embed initialization
@@ -92,109 +69,7 @@ export default function QuotePage() {
 
   return (
     <div className="min-h-screen bg-[#050505] text-zinc-50 font-sans selection:bg-emerald-500 selection:text-black overflow-x-hidden flex flex-col">
-      {/* Navigation */}
-      <nav 
-        className={`fixed z-50 w-full transition-all duration-500 ${
-          isScrolled 
-            ? 'top-4 px-4 md:px-6 bg-transparent border-b border-transparent' 
-            : 'top-0 px-0 bg-[#050505]/80 backdrop-blur-md border-b border-white/10'
-        }`}
-      >
-        <div 
-          className={`mx-auto flex items-center justify-between transition-all duration-500 ${
-            isScrolled 
-              ? 'max-w-5xl bg-[#111]/90 backdrop-blur-xl border border-white/10 rounded-full h-16 px-6 shadow-2xl shadow-black/50' 
-              : 'max-w-7xl h-24 px-6 md:px-8 border border-transparent rounded-full'
-          }`}
-        >
-          <Link to="/" className="font-black text-xl tracking-tighter uppercase flex items-center gap-2 group">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 group-hover:animate-ping" />
-            Taahzino.
-          </Link>
-          <div className="hidden lg:flex items-center gap-8 text-sm font-bold text-white/70">
-            {['About', 'Services', 'Projects', 'Skills', 'Testimonials', 'Contact'].map((item) => (
-              <Link 
-                key={item}
-                to={`/#${item.toLowerCase()}`} 
-                className="relative hover:text-emerald-400 transition-colors py-2 group"
-              >
-                /{item}
-              </Link>
-            ))}
-          </div>
-          <div className="flex items-center gap-4">
-            <Link 
-              to="/quote" 
-              className={`hidden lg:inline-flex relative items-center justify-center px-6 py-2.5 font-black uppercase tracking-widest text-xs transition-all group overflow-hidden ${
-                isScrolled ? 'bg-white text-black rounded-full hover:bg-zinc-200' : 'bg-white text-black hover:bg-zinc-200'
-              }`}
-            >
-              <span className="absolute inset-0 w-full h-full bg-black/10 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
-              <span className="relative z-10 flex items-center">
-                Get a Quote
-              </span>
-            </Link>
-            <button 
-              className="lg:hidden text-white hover:text-emerald-400 transition-colors p-2 -mr-2"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-[#050505]/95 backdrop-blur-xl pt-32 px-8 lg:hidden flex flex-col"
-          >
-            <div className="flex flex-col gap-8 text-4xl font-black uppercase tracking-tighter">
-              {[
-                { name: 'About', href: '/#about' },
-                { name: 'Services', href: '/#services' },
-                { name: 'Projects', href: '/#projects' },
-                { name: 'Skills', href: '/#skills' },
-                { name: 'Testimonials', href: '/#testimonials' },
-                { name: 'Contact', href: '/#contact' },
-              ].map((item, i) => (
-                <motion.div
-                  key={item.name}
-                  initial={{ opacity: 0, y: 40 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  transition={{ duration: 0.5, delay: i * 0.05, ease: [0.21, 0.47, 0.32, 0.98] }}
-                >
-                  <Link 
-                    to={item.href} 
-                    onClick={() => setIsMobileMenuOpen(false)} 
-                    className="flex items-center gap-4 hover:text-emerald-400 transition-colors"
-                  >
-                    <span className="text-emerald-500 text-xl font-mono">0{i + 1}</span>
-                    {item.name}
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.5, delay: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
-              className="mt-auto mb-12"
-            >
-              <Link to="/quote" onClick={() => setIsMobileMenuOpen(false)} className="relative flex items-center justify-center px-6 py-5 bg-white text-black font-black uppercase tracking-widest text-sm transition-all hover:bg-zinc-200 w-full">
-                Get a Quote
-              </Link>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <Navbar />
 
       {/* Main Content */}
       <main className="flex-grow pt-32 pb-16 md:pt-48 md:pb-32 relative">
@@ -321,88 +196,7 @@ export default function QuotePage() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="relative py-12 md:py-24 border-t border-white/10 bg-[#050505] overflow-hidden">
-        {/* Background Text Overlay */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 text-[20vw] font-black text-white/[0.02] uppercase tracking-tighter whitespace-nowrap pointer-events-none select-none">
-         Taahzino
-        </div>
-
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-16 mb-24">
-            <div className="md:col-span-5">
-              <span className="font-black text-3xl tracking-tighter uppercase block mb-8">Taahzino.</span>
-              <p className="text-zinc-400 text-lg leading-relaxed max-w-md mb-10">
-                Building high-performance digital experiences with a focus on scalability, clean architecture, and user-centric design.
-              </p>
-              <div className="flex gap-4">
-                {contact.socials.map((social, i) => {
-                  let Icon = Github;
-                  if (social.name === 'LinkedIn') Icon = Linkedin;
-                  if (social.name === 'Twitter') Icon = ExternalLink;
-                  
-                  return (
-                    <a 
-                      key={i} 
-                      href={social.url} 
-                      className="w-12 h-12 border border-white/10 flex items-center justify-center text-zinc-500 hover:text-black hover:bg-white hover:border-white transition-all duration-300 group"
-                      aria-label={social.name}
-                    >
-                      <Icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                    </a>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="md:col-span-2 md:col-start-8">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 mb-10">Navigation</h4>
-              <ul className="space-y-5 text-xs font-bold uppercase tracking-widest">
-                <li><Link to="/#about" className="text-zinc-400 hover:text-emerald-400 transition-colors flex items-center gap-2 group"><span className="w-0 group-hover:w-4 h-[1px] bg-emerald-400 transition-all duration-300" />/ About</Link></li>
-                <li><Link to="/#services" className="text-zinc-400 hover:text-emerald-400 transition-colors flex items-center gap-2 group"><span className="w-0 group-hover:w-4 h-[1px] bg-emerald-400 transition-all duration-300" />/ Work</Link></li>
-                <li><Link to="/#skills" className="text-zinc-400 hover:text-emerald-400 transition-colors flex items-center gap-2 group"><span className="w-0 group-hover:w-4 h-[1px] bg-emerald-400 transition-all duration-300" />/ Skills</Link></li>
-                <li><Link to="/#testimonials" className="text-zinc-400 hover:text-emerald-400 transition-colors flex items-center gap-2 group"><span className="w-0 group-hover:w-4 h-[1px] bg-emerald-400 transition-all duration-300" />/ Reviews</Link></li>
-                <li><Link to="/#contact" className="text-zinc-400 hover:text-emerald-400 transition-colors flex items-center gap-2 group"><span className="w-0 group-hover:w-4 h-[1px] bg-emerald-400 transition-all duration-300" />/ Contact</Link></li>
-              </ul>
-            </div>
-
-            <div className="md:col-span-3">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 mb-10">Newsletter</h4>
-              <p className="text-sm text-zinc-400 mb-8 leading-relaxed">Subscribe to get the latest updates on my projects and articles.</p>
-              <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
-                <input 
-                  type="email" 
-                  placeholder="EMAIL ADDRESS" 
-                  className="w-full bg-white/5 border border-white/10 px-6 py-4 text-xs font-bold tracking-widest focus:outline-none focus:border-white transition-colors uppercase"
-                />
-                <button className="w-full bg-white text-black px-6 py-4 text-xs font-black uppercase tracking-widest hover:bg-zinc-200 transition-colors flex items-center justify-center gap-2">
-                  Subscribe
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </form>
-            </div>
-          </div>
-
-          <div className="pt-12 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="text-zinc-500 font-bold uppercase tracking-widest text-[10px] flex flex-col md:flex-row items-center gap-4 md:gap-8">
-              <span>© {new Date().getFullYear()} Taahzino.</span>
-              <span className="hidden md:block w-1 h-1 bg-zinc-800 rounded-full" />
-              <span>All rights reserved.</span>
-              <span className="hidden md:block w-1 h-1 bg-zinc-800 rounded-full" />
-              <span>Designed with passion.</span>
-            </div>
-            <button 
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="group flex items-center gap-4 text-xs font-black uppercase tracking-widest text-zinc-400 hover:text-white transition-all"
-            >
-              Back to top
-              <div className="w-12 h-12 border border-white/10 flex items-center justify-center group-hover:border-white group-hover:bg-white group-hover:text-black transition-all duration-300">
-                <ArrowRight className="w-5 h-5 -rotate-90 group-hover:-translate-y-1 transition-transform" />
-              </div>
-            </button>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
