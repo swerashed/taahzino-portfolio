@@ -4,8 +4,10 @@
  */
 
 import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Lenis from 'lenis';
 import BoldVariation from './variations/BoldVariation';
+import QuotePage from './pages/QuotePage';
 
 export default function App() {
   useEffect(() => {
@@ -24,8 +26,13 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-white font-sans">
-      <BoldVariation />
-    </div>
+    <BrowserRouter>
+      <div className="min-h-screen bg-black text-white font-sans">
+        <Routes>
+          <Route path="/" element={<BoldVariation />} />
+          <Route path="/quote" element={<QuotePage />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }

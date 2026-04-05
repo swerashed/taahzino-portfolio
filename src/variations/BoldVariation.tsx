@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence, useMotionValue, useSpring, useMotionTemplate, useTransform } from 'motion/react';
 import { ArrowRight, ExternalLink, Github, Linkedin, Mail, MapPin, Phone, Star, Clock, X, Play, Terminal, Layers, Cloud, Database, Bot, Network, Smartphone, Wrench, Menu } from 'lucide-react';
 import { portfolioData } from '../data/portfolio';
@@ -366,16 +367,15 @@ export default function BoldVariation() {
               <a 
                 key={item}
                 href={`#${item.toLowerCase()}`} 
-                className="relative hover:text-white transition-colors py-2 group"
+                className="relative hover:text-emerald-400 transition-colors py-2 group"
               >
                 /{item}
-                <span className="absolute left-0 bottom-0 w-0 h-px bg-emerald-500 transition-all duration-300 group-hover:w-full" />
               </a>
             ))}
           </div>
           <div className="flex items-center gap-4">
-            <a 
-              href="#contact" 
+            <Link 
+              to="/quote" 
               className={`hidden lg:inline-flex relative items-center justify-center px-6 py-2.5 font-black uppercase tracking-widest text-xs transition-all group overflow-hidden ${
                 isScrolled ? 'bg-white text-black rounded-full hover:bg-zinc-200' : 'bg-white text-black hover:bg-zinc-200'
               }`}
@@ -384,7 +384,7 @@ export default function BoldVariation() {
               <span className="relative z-10 flex items-center">
                 Let's Talk
               </span>
-            </a>
+            </Link>
             <button 
               className="lg:hidden text-white hover:text-emerald-400 transition-colors p-2 -mr-2"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -439,9 +439,9 @@ export default function BoldVariation() {
               transition={{ duration: 0.5, delay: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
               className="mt-auto mb-12"
             >
-              <a href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="relative flex items-center justify-center px-6 py-5 bg-white text-black font-black uppercase tracking-widest text-sm transition-all hover:bg-zinc-200 w-full">
+              <Link to="/quote" onClick={() => setIsMobileMenuOpen(false)} className="relative flex items-center justify-center px-6 py-5 bg-white text-black font-black uppercase tracking-widest text-sm transition-all hover:bg-zinc-200 w-full">
                 Let's Talk
-              </a>
+              </Link>
             </motion.div>
           </motion.div>
         )}
@@ -1043,6 +1043,34 @@ export default function BoldVariation() {
             </div>
           </div>
         )}
+      </section>
+
+      {/* Get a Quote CTA Section */}
+      <section className="py-24 md:py-32 border-t border-white/10 bg-emerald-500 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, black 1px, transparent 0)', backgroundSize: '32px 32px' }} />
+        
+        <div className="max-w-5xl mx-auto px-6 relative z-10 text-center">
+          <FadeIn>
+            <h2 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter text-black mb-8 leading-[0.9]">
+              Ready to <br />
+              <span className="text-transparent" style={{ WebkitTextStroke: '2px black' }}>Start Building?</span>
+            </h2>
+            <p className="text-black/80 text-lg md:text-xl max-w-2xl mx-auto mb-12 font-medium">
+              Turn your vision into reality. Get a detailed, custom quote for your next big project and let's create something extraordinary together.
+            </p>
+            <Link 
+              to="/quote" 
+              className="inline-flex items-center justify-center px-8 py-5 bg-black text-white font-black uppercase tracking-widest text-sm hover:bg-zinc-800 hover:scale-105 transition-all duration-300 group relative overflow-hidden shadow-2xl"
+            >
+              <span className="absolute inset-0 w-full h-full bg-white/10 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
+              <span className="relative z-10 flex items-center gap-3">
+                Get a Free Quote
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </span>
+            </Link>
+          </FadeIn>
+        </div>
       </section>
 
       {/* Contact Section */}
