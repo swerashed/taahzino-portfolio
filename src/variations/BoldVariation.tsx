@@ -382,7 +382,7 @@ export default function BoldVariation() {
             >
               <span className="absolute inset-0 w-full h-full bg-black/10 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
               <span className="relative z-10 flex items-center">
-                Let's Talk
+                Get a Quote
               </span>
             </Link>
             <button 
@@ -440,7 +440,7 @@ export default function BoldVariation() {
               className="mt-auto mb-12"
             >
               <Link to="/quote" onClick={() => setIsMobileMenuOpen(false)} className="relative flex items-center justify-center px-6 py-5 bg-white text-black font-black uppercase tracking-widest text-sm transition-all hover:bg-zinc-200 w-full">
-                Let's Talk
+                Get a Quote
               </Link>
             </motion.div>
           </motion.div>

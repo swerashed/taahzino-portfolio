@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowRight, ArrowLeft, CheckCircle2, X } from 'lucide-react';
+import { ArrowRight, ArrowLeft, CheckCircle2, X, Menu, Github, Linkedin, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { portfolioData } from '../data/portfolio';
 
 // Reusable animation wrapper
 const FadeIn = ({ children, delay = 0, className = "" }: { children: React.ReactNode, delay?: number, className?: string }) => (
@@ -17,7 +18,9 @@ const FadeIn = ({ children, delay = 0, className = "" }: { children: React.React
 );
 
 export default function QuotePage() {
+  const { contact } = portfolioData;
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -34,6 +37,45 @@ export default function QuotePage() {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    // Cal.com embed initialization
+    (function (C: any, A: string, L: string) { 
+      let p = function (a: any, ar: any) { a.q.push(ar); }; 
+      let d = C.document; 
+      C.Cal = C.Cal || function () { 
+        let cal = C.Cal; let ar = arguments; 
+        if (!cal.loaded) { 
+          cal.ns = {}; cal.q = cal.q || []; 
+          let script = d.createElement("script");
+          script.src = A; 
+          d.head.appendChild(script); 
+          cal.loaded = true; 
+        } 
+        if (ar[0] === L) { 
+          const api = function () { p(api, arguments); }; 
+          const namespace = ar[1]; 
+          api.q = api.q || []; 
+          if(typeof namespace === "string"){
+            cal.ns[namespace] = cal.ns[namespace] || api;
+            p(cal.ns[namespace], ar);
+            p(cal, ["initNamespace", namespace]);
+          } else p(cal, ar); 
+          return;
+        } 
+        p(cal, ar); 
+      }; 
+    })(window, "https://app.cal.com/embed/embed.js", "init");
+    
+    const Cal = (window as any).Cal;
+    Cal("init", "30min", {origin:"https://app.cal.com"});
+    Cal.ns["30min"]("inline", {
+      elementOrSelector:"#my-cal-inline-30min",
+      config: {"layout":"month_view","useSlotsViewOnSmallScreen":"true"},
+      calLink: "swerashed/30min",
+    });
+    Cal.ns["30min"]("ui", {"cssVarsPerTheme":{"light":{"cal-brand":"#10b981"},"dark":{"cal-brand":"#10b981"}},"hideEventTypeDetails":false,"layout":"month_view"});
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -69,30 +111,98 @@ export default function QuotePage() {
             <span className="w-2 h-2 rounded-full bg-emerald-500 group-hover:animate-ping" />
             Taahzino.
           </Link>
+          <div className="hidden lg:flex items-center gap-8 text-sm font-bold text-white/70">
+            {['About', 'Services', 'Projects', 'Skills', 'Testimonials', 'Contact'].map((item) => (
+              <Link 
+                key={item}
+                to={`/#${item.toLowerCase()}`} 
+                className="relative hover:text-emerald-400 transition-colors py-2 group"
+              >
+                /{item}
+              </Link>
+            ))}
+          </div>
           <div className="flex items-center gap-4">
             <Link 
-              to="/" 
-              className={`inline-flex relative items-center justify-center px-6 py-2.5 font-black uppercase tracking-widest text-xs transition-all group overflow-hidden ${
+              to="/quote" 
+              className={`hidden lg:inline-flex relative items-center justify-center px-6 py-2.5 font-black uppercase tracking-widest text-xs transition-all group overflow-hidden ${
                 isScrolled ? 'bg-white text-black rounded-full hover:bg-zinc-200' : 'bg-white text-black hover:bg-zinc-200'
               }`}
             >
               <span className="absolute inset-0 w-full h-full bg-black/10 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
-              <span className="relative z-10 flex items-center gap-2">
-                <ArrowLeft className="w-4 h-4" />
-                Back to Home
+              <span className="relative z-10 flex items-center">
+                Get a Quote
               </span>
             </Link>
+            <button 
+              className="lg:hidden text-white hover:text-emerald-400 transition-colors p-2 -mr-2"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
         </div>
       </nav>
 
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-40 bg-[#050505]/95 backdrop-blur-xl pt-32 px-8 lg:hidden flex flex-col"
+          >
+            <div className="flex flex-col gap-8 text-4xl font-black uppercase tracking-tighter">
+              {[
+                { name: 'About', href: '/#about' },
+                { name: 'Services', href: '/#services' },
+                { name: 'Projects', href: '/#projects' },
+                { name: 'Skills', href: '/#skills' },
+                { name: 'Testimonials', href: '/#testimonials' },
+                { name: 'Contact', href: '/#contact' },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.name}
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ duration: 0.5, delay: i * 0.05, ease: [0.21, 0.47, 0.32, 0.98] }}
+                >
+                  <Link 
+                    to={item.href} 
+                    onClick={() => setIsMobileMenuOpen(false)} 
+                    className="flex items-center gap-4 hover:text-emerald-400 transition-colors"
+                  >
+                    <span className="text-emerald-500 text-xl font-mono">0{i + 1}</span>
+                    {item.name}
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.5, delay: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
+              className="mt-auto mb-12"
+            >
+              <Link to="/quote" onClick={() => setIsMobileMenuOpen(false)} className="relative flex items-center justify-center px-6 py-5 bg-white text-black font-black uppercase tracking-widest text-sm transition-all hover:bg-zinc-200 w-full">
+                Get a Quote
+              </Link>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Main Content */}
       <main className="flex-grow pt-32 pb-16 md:pt-48 md:pb-32 relative">
-        <div className="absolute inset-0 pointer-events-none opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '32px 32px' }} />
         
-        <div className="max-w-4xl mx-auto px-6 relative z-10">
-          <FadeIn>
-            <div className="mb-12 md:mb-20">
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
+            <FadeIn>
+              <div className="mb-12 lg:mb-0 max-w-xl">
               <div className="flex items-center gap-3 mb-6 font-mono text-sm md:text-base cursor-default group">
                 <span className="text-emerald-500 font-bold">{'>'}</span>
                 <span className="text-zinc-400 group-hover:text-zinc-200 transition-colors tracking-tight">PROJECT INQUIRY</span>
@@ -110,7 +220,7 @@ export default function QuotePage() {
 
           <FadeIn delay={0.2}>
             {!isSubmitted ? (
-              <form onSubmit={handleSubmit} className="bg-[#0a0a0a] border border-white/10 p-6 md:p-12 relative overflow-hidden group/form">
+              <form onSubmit={handleSubmit} className="bg-[#0a0a0a] border border-white/10 p-6 md:p-12 relative overflow-hidden group/form w-full">
                 {/* Decorative corner accents */}
                 <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-emerald-500/50" />
                 <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-emerald-500/50" />
@@ -171,7 +281,7 @@ export default function QuotePage() {
               <motion.div 
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-[#0a0a0a] border border-emerald-500/30 p-12 text-center flex flex-col items-center justify-center min-h-[400px]"
+                className="bg-[#0a0a0a] border border-emerald-500/30 p-12 text-center flex flex-col items-center justify-center min-h-[400px] w-full"
               >
                 <div className="w-20 h-20 bg-emerald-500/10 rounded-full flex items-center justify-center mb-6">
                   <CheckCircle2 className="w-10 h-10 text-emerald-500" />
@@ -190,18 +300,106 @@ export default function QuotePage() {
               </motion.div>
             )}
           </FadeIn>
+          </div>
+
+          {/* Cal.com Embed Section */}
+          <FadeIn delay={0.3}>
+            <div className="mt-24 pt-24 border-t border-white/10">
+              <div className="mb-12 text-center">
+                <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter leading-[0.9] mb-4">
+                  Or Schedule a <span className="text-emerald-500">Call</span>
+                </h2>
+                <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
+                  Prefer to discuss your project directly? Pick a time that works for you.
+                </p>
+              </div>
+              <div className="w-full bg-transparent rounded-xl overflow-hidden min-h-[600px]">
+                <div style={{width:'100%', height:'100%', overflow:'scroll'}} id="my-cal-inline-30min"></div>
+              </div>
+            </div>
+          </FadeIn>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="relative py-12 border-t border-white/10 bg-[#050505]">
+      <footer className="relative py-12 md:py-24 border-t border-white/10 bg-[#050505] overflow-hidden">
+        {/* Background Text Overlay */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 text-[20vw] font-black text-white/[0.02] uppercase tracking-tighter whitespace-nowrap pointer-events-none select-none">
+         Taahzino
+        </div>
+
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-16 mb-24">
+            <div className="md:col-span-5">
+              <span className="font-black text-3xl tracking-tighter uppercase block mb-8">Taahzino.</span>
+              <p className="text-zinc-400 text-lg leading-relaxed max-w-md mb-10">
+                Building high-performance digital experiences with a focus on scalability, clean architecture, and user-centric design.
+              </p>
+              <div className="flex gap-4">
+                {contact.socials.map((social, i) => {
+                  let Icon = Github;
+                  if (social.name === 'LinkedIn') Icon = Linkedin;
+                  if (social.name === 'Twitter') Icon = ExternalLink;
+                  
+                  return (
+                    <a 
+                      key={i} 
+                      href={social.url} 
+                      className="w-12 h-12 border border-white/10 flex items-center justify-center text-zinc-500 hover:text-black hover:bg-white hover:border-white transition-all duration-300 group"
+                      aria-label={social.name}
+                    >
+                      <Icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="md:col-span-2 md:col-start-8">
+              <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 mb-10">Navigation</h4>
+              <ul className="space-y-5 text-xs font-bold uppercase tracking-widest">
+                <li><Link to="/#about" className="text-zinc-400 hover:text-emerald-400 transition-colors flex items-center gap-2 group"><span className="w-0 group-hover:w-4 h-[1px] bg-emerald-400 transition-all duration-300" />/ About</Link></li>
+                <li><Link to="/#services" className="text-zinc-400 hover:text-emerald-400 transition-colors flex items-center gap-2 group"><span className="w-0 group-hover:w-4 h-[1px] bg-emerald-400 transition-all duration-300" />/ Work</Link></li>
+                <li><Link to="/#skills" className="text-zinc-400 hover:text-emerald-400 transition-colors flex items-center gap-2 group"><span className="w-0 group-hover:w-4 h-[1px] bg-emerald-400 transition-all duration-300" />/ Skills</Link></li>
+                <li><Link to="/#testimonials" className="text-zinc-400 hover:text-emerald-400 transition-colors flex items-center gap-2 group"><span className="w-0 group-hover:w-4 h-[1px] bg-emerald-400 transition-all duration-300" />/ Reviews</Link></li>
+                <li><Link to="/#contact" className="text-zinc-400 hover:text-emerald-400 transition-colors flex items-center gap-2 group"><span className="w-0 group-hover:w-4 h-[1px] bg-emerald-400 transition-all duration-300" />/ Contact</Link></li>
+              </ul>
+            </div>
+
+            <div className="md:col-span-3">
+              <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 mb-10">Newsletter</h4>
+              <p className="text-sm text-zinc-400 mb-8 leading-relaxed">Subscribe to get the latest updates on my projects and articles.</p>
+              <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
+                <input 
+                  type="email" 
+                  placeholder="EMAIL ADDRESS" 
+                  className="w-full bg-white/5 border border-white/10 px-6 py-4 text-xs font-bold tracking-widest focus:outline-none focus:border-white transition-colors uppercase"
+                />
+                <button className="w-full bg-white text-black px-6 py-4 text-xs font-black uppercase tracking-widest hover:bg-zinc-200 transition-colors flex items-center justify-center gap-2">
+                  Subscribe
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <div className="pt-12 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="text-zinc-500 font-bold uppercase tracking-widest text-[10px] flex flex-col md:flex-row items-center gap-4 md:gap-8">
               <span>© {new Date().getFullYear()} Taahzino.</span>
               <span className="hidden md:block w-1 h-1 bg-zinc-800 rounded-full" />
               <span>All rights reserved.</span>
+              <span className="hidden md:block w-1 h-1 bg-zinc-800 rounded-full" />
+              <span>Designed with passion.</span>
             </div>
+            <button 
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="group flex items-center gap-4 text-xs font-black uppercase tracking-widest text-zinc-400 hover:text-white transition-all"
+            >
+              Back to top
+              <div className="w-12 h-12 border border-white/10 flex items-center justify-center group-hover:border-white group-hover:bg-white group-hover:text-black transition-all duration-300">
+                <ArrowRight className="w-5 h-5 -rotate-90 group-hover:-translate-y-1 transition-transform" />
+              </div>
+            </button>
           </div>
         </div>
       </footer>
