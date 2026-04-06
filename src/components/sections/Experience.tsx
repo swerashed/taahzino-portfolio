@@ -73,36 +73,42 @@ export const Experience = () => {
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[1px] bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-emerald-500/5 blur-[100px] pointer-events-none" />
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 relative z-10 max-w-7xl mx-auto">
-                  <div className="lg:col-span-5 flex flex-col">
-                    <div className="flex items-center gap-4 mb-8">
-                      <span className="text-emerald-500 font-mono text-lg font-bold">{exp.id}</span>
-                      <div className="h-px bg-white/20 flex-1" />
-                      <span className="text-zinc-500 font-mono text-xs md:text-sm uppercase tracking-widest">{exp.period}</span>
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 relative z-10 max-w-7xl mx-auto items-start">
+                  {/* Left Column: ID & Period */}
+                  <div className="lg:col-span-3 flex flex-row lg:flex-col justify-between lg:justify-start items-center lg:items-start gap-4 lg:pr-8 lg:border-r lg:border-white/10">
+                    <div className="flex items-center gap-3">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                      <span className="text-zinc-100 font-mono text-sm font-bold">{exp.id}</span>
                     </div>
-                    <h3 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter text-white mb-4 leading-[0.9]">
-                      {exp.role}
-                    </h3>
-                    <div className="flex flex-wrap items-center gap-3 md:gap-4 mb-2">
-                      <p className="text-xl md:text-2xl font-medium text-zinc-300">
-                        {exp.company}
-                      </p>
-                      <span className="hidden md:block w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                      <p className="text-xs md:text-sm font-mono text-zinc-500 uppercase tracking-widest">{exp.location}</p>
+                    <div className="h-px bg-white/10 flex-1 lg:hidden" />
+                    <div className="flex flex-col items-end lg:items-start gap-1.5">
+                      <span className="text-zinc-400 font-mono text-xs md:text-sm uppercase tracking-widest">{exp.period}</span>
+                      <span className="text-zinc-600 font-mono text-[10px] md:text-xs uppercase tracking-widest">{exp.location}</span>
                     </div>
                   </div>
 
-                  <div className="lg:col-span-7 flex flex-col justify-center">
-                    <p className="text-zinc-400 text-lg md:text-xl leading-relaxed mb-10">
+                  {/* Middle Column: Role & Description */}
+                  <div className="lg:col-span-6 flex flex-col lg:pr-8">
+                    <div className="flex flex-col mb-6">
+                      <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tighter text-white mb-2">
+                        {exp.role}
+                      </h3>
+                      <div className="flex items-center gap-3">
+                        <span className="text-emerald-400 font-mono text-xs uppercase tracking-widest">{exp.company}</span>
+                      </div>
+                    </div>
+                    <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
                       {exp.description}
                     </p>
-                    <div className="flex flex-wrap gap-3">
-                      {exp.tags.map(tag => (
-                        <span key={tag} className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-mono uppercase tracking-widest text-zinc-300 hover:border-emerald-500/50 hover:text-emerald-400 transition-colors cursor-default">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+                  </div>
+
+                  {/* Right Column: Tags */}
+                  <div className="lg:col-span-3 flex flex-wrap gap-2 lg:justify-end content-start">
+                    {exp.tags.map(tag => (
+                      <span key={tag} className="px-3 py-1.5 bg-white/5 border border-white/10 text-[10px] font-mono uppercase tracking-widest text-zinc-400 hover:border-emerald-500/50 hover:text-emerald-400 transition-colors cursor-default">
+                        {tag}
+                      </span>
+                    ))}
                   </div>
                 </div>
               </div>
